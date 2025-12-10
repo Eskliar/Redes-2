@@ -119,23 +119,22 @@ Finalmente las direcciones: `200.5.48.0` hasta `200.5.59.143` quedan libres para
 
 ### Asignación de direcciones a cada red a partir del bloque IPv4 asignado
 
-![Bloques Asignados Ejercicio 12 Práctica 3](../Recursos-TPI/Ejercicio12-Practica3-Bloques-Asignados.png)
+![Bloques red Asignados tp3](image.png)
 
 ### Asignación de direcciones a cada host a partir del bloque IPv4 asignado
 
-![Hosts Asignados Ejercicio 12 Práctica 3](../Recursos-TPI/Ejercicio12-Practica3-HostsIPv4-Asignados.png)
-
+![Hosts ipv4 Asignados tp3](image-2.png)
 ---
 
 ## Configurar la red detrás de n5 (n5,n13,n11) y la Red C con el bloque IPv6 asignado.
 
-### Direcciones IPv6 asignadas con el bloque asignado 2001:db81::/32
+### Direcciones IPv6 asignadas con el bloque asignado 200A:db8:d1e0::/48
 
-A diferencia de IPv4, en IPv6 no se aplica VLSM. El espacio de direcciones es tan grande que la práctica estándar es asignar un prefijo /64 a cada subred.
+A diferencia de IPv4, en IPv6 no se aplica VLSM. El espacio de direcciones es tan grande que la práctica estándar es asignar un prefijo /64 a cada subred. Este prefijo se utiliza por convención estándar SLAAC, que configura automáticamente las direciones IP sin necesidad de un servidor DHCP.
 
-Para organizar el direccionamiento, dividiremos el bloque /32 y lo dividimos en bloques /48 para cada red principal.
+Un bloque /48 tiene 2⁸⁰ direcciones (es un bloque mucho más pequeño que un /32), pero aún es un bloque muy grande para asignar a una organización, hasta 65,536 subredes
 
-#### Asignación para Red A 2001:db81:000A::/48
+#### Asignación para Red A:
 
 Se divide la Red A en subredes, asignando un /64 a cada una.
 
@@ -143,12 +142,18 @@ Para este caso solo necesitamos una
 
 Subred (n5, n11, n13):
 
-**Red Asignada: 2001:db81:000A:0001::/64**
+200A:db8:d1e0:0000::/64 generalmente se deja reservada como red base o como red general.
+
+entonces ->
+
+**Red Asignada: 200A:db8:d1e0:0001::/64**
+
+queda asignada como subred principal par
 
 
-#### Asignación para Red C 2001:db81:000C::/48
+#### Asignación para Red C:
 
-Se divide la Red C en cuatro subredes, asignando un /64 a cada una.
+Para la red C, necesitamos cuatro subredes, asignando un /64 a cada una.
 
 Subred (n2, n7):
 

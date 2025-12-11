@@ -284,38 +284,42 @@ El tráfico de salida desde n10 tendrá la IP pública de n1 como su dirección 
 
 ## Capturar puntualmente el tráfico de n13 hacia n7 y analizar: ARP e ICMP.
 
-### Captura de tráfico realizando ping de n13 hacia n14
+### Captura de tráfico realizando ping de n13 hacia n7
+Se ha capturado la interfaz eth0 del router n5 mediante Wireshark.
 
-![Captura ping n13 hacia n14 Ejercicio 12 Práctica 3](../Recursos-TPI/Ejercicio12-Practica3-Captura-n13-n14.png)
+![Wireshark n5 ping n13-n7](image-5.png)
 
-![Captura ping n13 hacia n14 Detalle Ejercicio 12 Práctica 3](../Recursos-TPI/Ejercicio12-Practica3-Captura-n13-n14-detalle.png)
+- Análisis ARP (Paquetes 17,18,19,20):
+    - El ping (ICMP) no puede salir de inmediato. n13 sabe que n7 está en otra red, por lo que primero debe encontrar la dirección MAC de su gateway (n5, 200.5.60.1). Lo mismo sucede con n5, debe conocer la MAC de n13.
+    - Paquete 17 y 18: Son las solicitudes ARP de n5 y n13 ("¿Quién tiene la IP 200.5.60.3" y "¿Quién tiene la IP 200.5.60.1").
+    - Paquete 19 y 20: Son las respuestas ARP del gateway n13 y n5, informando su dirección MAC (00:00:00:aa:00:00) y (00:00:00:aa:00:02).
 
-- Análisis ARP (Paquetes 7 y 8):
-    - El ping (ICMP) no puede salir de inmediato. n13 sabe que n14 está en otra red, por lo que primero debe encontrar la dirección MAC de su gateway (n5, en ...20.1).
-    - Paquete 7: Es la solicitud ARP de n13 ("¿Quién tiene la IP 46.90.20.1?").
-    - Paquete 8: Es la respuesta ARP del gateway n5, informando su dirección MAC (00:00:00:aa:00:02).
+![Wireshark n5 ICMP request](image-6.png)
+![Wireshark n5 ICMP reply](image-7.png)
 
-- Análisis ICMP (Paquetes 9 y 10):
+- Análisis ICMP (Paquetes 21 y 22):
     - Una vez resuelto el ARP, n13 envía el ping.
-    - Paquete 9 (Request): Su destino IP es n14 (46.90.22.2), pero su destino MAC es el gateway n5 (00:00:00:aa:00:02).
-    - Paquete 10 (Reply): Es la respuesta de n14 que regresa. El gateway n5 la recibe y entrega localmente a la MAC de n13.
+    - Paquete 21 (Request): Su destino IP es n7 (200.5.59.150), pero su destino MAC es el gateway n5 (00:00:00:aa:00:02).
+    - Paquete 22 (Reply): Es la respuesta de n7 que regresa. El gateway n5 la recibe y entrega localmente a la MAC de n13.
 
 ---
 
 ### Realizar un traceroute entre los mismos equipos, capturar los mensajes.
 
-### Captura de tráfico realizando traceroute de n13 hacia n14
+### Captura de tráfico realizando traceroute de n13 hacia n7
 
-![Captura traceroute n13 hacia n14 Ejercicio 12 Práctica 3](../Recursos-TPI/Ejercicio12-Practica3-Captura-n13-n14-traceroute-completo.png)
+![Traceroute n13-n7 TTL exceeded](image-8.png)
 
 - Aparecen numerosas entradas “Time-to-live exceeded (in transit)” provenientes de las interfaces de los routers (enlaces punto-a-punto).
-- La última respuesta fue “Destination unreachable (Port unreachable)” desde 46.90.22.2, lo que indica llegada al bloque de RED C y, por lo tanto, al host destino (n14).
-- Cada salto presenta varias respuestas porque traceroute emite varios paquetes por TTL (normalmente 3).
+- La última respuesta fue “Destination unreachable (Port unreachable)” desde 200.5.59.150, lo que indica llegada al bloque de RED C y al router n7.
+- Cada salto presenta varias respuestas porque traceroute emite varios paquetes por TTL (normalmente 3, como es el caso).
 - Se observan paquetes UDP salientes y las respuestas ICMP de los saltos intermedios.
 
 ---
 
 ## Alternativo: Modificar los MTU para ver la fragmentación.
+
+Modificaremos el enlace n2-n7, para luego probar el tráfico desde n13 a n14, que pasa por n7.
 
 ### Comandos utilizados para modificar el MTU del enlace entre n2 y n7
   
@@ -325,18 +329,26 @@ El tráfico de salida desde n10 tendrá la IP pública de n1 como su dirección 
 
 `ip link show eth0` -> verificar el MTU configurado en eth0
 
+![MTU n7](image-9.png)
+
 **Router n2**
 
 `ip link set dev eth3 mtu 500` -> en la interfaz eth3
 
 `ip link show eth3` -> verificar el MTU configurado en eth3
 
+![MTU n2](image-10.png)
+
+Modificamos el MTU (unidad máxima de transmisión en un salto de red) a 500bytes
+
 ### Captura de tráfico realizando ping de n13 hacia n14 modificando MTU entre n2 y n7
 
-Se utilzó el comando `ping 46.90.22.2 -s 1000 -c 1 -M dont` dentro de n13
+Se utilzó el comando `ping 200.5.62.2 -s 1000 -c 1` dentro de n13.
+Este comando envía un solo paquete de tamaño 1000 bytes
 
-![Captura ping n13 hacia n14 MTU Ejercicio 12 Práctica 3](../Recursos-TPI/Ejercicio12-Practica3-Captura-n13-n14-MTU.png)
- 
+![ping n13-n14 MTU](image-13.png)
+
+![wireshark fragmentación](image-12.png)
 ---
 
 ## Probar conectividad en las redes con IPv6 (por separado), capturar tráfico y analizar ICMPv6
@@ -348,10 +360,32 @@ Para el caso de la subred (n5, n13 y n11) no hizo falta configurar rutas ya que 
 ### Comandos aplicados dentro de la Red C
 
 **Router n2**
-- `ip -6 route add default via 2001:db81:000C:0001::2`
+- `ip -6 route add default via 200A:db8:d1e0:0002::2`
 
 **Router n7**
-- `ip -6 route add default via 2001:db81:000C:0002::2`
+- `ip -6 route add default via 200A:db8:d1e0:0002::1`
 
 **Router n8**
-- `ip -6 route add default via 2001:db81:000C:0002::1`
+- `ip -6 route add default via 200A:db8:d1e0:0003::2`
+
+#### Captura de tráfico en Red C:
+
+##### ping n14-n9 (captura eth2 router n8)
+![ping6 n14-n9](image-14.png)
+![Wireshark ping6 n14-n9](image-15.png)
+
+- Análisis ICMPv6 (Paquetes 24,25):
+    - Se envía el Echo request, y se recibe la respuesta sin mas, pues están dentro de la misma red.
+    - Paquete 24 (Request):
+    - Paquete 25 (Reply): 
+
+- Análisis ICMPv6 (Paquetes 29,32):
+    - Se inicia el protocolo NDP de descubrimiento de dispositivos vecinos, descubriendo direcciones MAC: Neighbor Solicitation, para solicitar MAC vecina, Neighbor Advertisement para responder la solicitud.
+
+- Análisis ICMPv6 (Paquetes 36,39):
+    - Igual que el bloque de paquetes anterior, son parte del protocolo NDP
+
+##### ping n14-n2 (captura eth1 router n7)
+
+![ping6 n14-n2](image-16.png)
+![Wireshark ping6 n14-n9](image-17.png)

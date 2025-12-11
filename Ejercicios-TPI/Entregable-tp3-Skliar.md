@@ -159,6 +159,7 @@ Subred (n2, n7):
 **Red Asignada: 200A:db8:d1e0:0002::/64**
 
 Subred (n7, n8):
+Por mas que sea una conexión p2p entre routers, se usa /64 en lugar de direcciones mas chicas (como /126)redes por compatibilidad con SLAAC y NDP
 
 **Red Asignada: 200A:db8:d1e0:0003::/64**
 
@@ -184,83 +185,83 @@ Subred (n14):
 ### Comandos aplicados a cada router
 
 **Router n5**
-- `ip route add default via 46.90.19.182`
+- `ip route add default via 200.5.59.182`
 
 **Router n6**
-- `ip route add default via 46.90.19.178`
-- `ip route add 46.90.20.0/23 via 46.90.19.185`
+- `ip route add default via 200.5.59.178`
+- `ip route add 200.5.60.0/23 via 200.5.59.185`
 
 **Router n3**
-- `ip route add 46.90.20.0/23 via 46.90.19.181`
-- `ip route add 46.90.19.184/30 via 46.90.19.181`
-- `ip route add 46.90.19.188/30 via 46.90.19.166`
-- `ip route add 46.90.19.160/30 via 46.90.19.166`
-- `ip route add 46.90.19.168/30 via 46.90.19.174`
-- `ip route add 46.90.19.152/30 via 46.90.19.158`
-- `ip route add 46.90.19.148/30 via 46.90.19.158`
-- `ip route add 46.90.19.144/30 via 46.90.19.158`
-- `ip route add 46.90.19.192/26 via 46.90.19.158`
-- `ip route add 46.90.22.0/23 via 46.90.19.158`
+- `ip route add 200.5.60.0/23 via 200.5.59.181`
+- `ip route add 200.5.59.184/30 via 200.5.59.181`
+- `ip route add 200.5.59.188/30 via 200.5.59.166`
+- `ip route add 200.5.59.160/30 via 200.5.59.166`
+- `ip route add 200.5.59.168/30 via 200.5.59.174`
+- `ip route add 200.5.59.152/30 via 200.5.59.158`
+- `ip route add 200.5.59.148/30 via 200.5.59.158`
+- `ip route add 200.5.59.144/30 via 200.5.59.158`
+- `ip route add 200.5.59.192/26 via 200.5.59.158`
+- `ip route add 200.5.62.0/23 via 200.5.59.158`
 
 **Router n1**
-- `ip route add 46.90.20.0/23 via 46.90.19.165`
-- `ip route add 46.90.19.184/30 via 46.90.19.165`
-- `ip route add 46.90.19.180/30 via 46.90.19.165`
-- `ip route add 46.90.19.176/30 via 46.90.19.165`
-- `ip route add 46.90.19.156/30 via 46.90.19.165`
-- `ip route add 46.90.19.172/30 via 46.90.19.165`
-- `ip route add 46.90.19.168/30 via 46.90.19.165`
-- `ip route add 46.90.19.152/30 via 46.90.19.162`
-- `ip route add 46.90.19.148/30 via 46.90.19.162`
-- `ip route add 46.90.19.144/30 via 46.90.19.162`
-- `ip route add 46.90.19.192/26 via 46.90.19.162`
-- `ip route add 46.90.22.0/23 via 46.90.19.162`
+- `ip route add 200.5.60.0/23 via 200.5.59.165`
+- `ip route add 200.5.59.184/30 via 200.5.59.165`
+- `ip route add 200.5.59.180/30 via 200.5.59.165`
+- `ip route add 200.5.59.176/30 via 200.5.59.165`
+- `ip route add 200.5.59.156/30 via 200.5.59.165`
+- `ip route add 200.5.59.172/30 via 200.5.59.165`
+- `ip route add 200.5.59.168/30 via 200.5.59.165`
+- `ip route add 200.5.59.152/30 via 200.5.59.162`
+- `ip route add 200.5.59.148/30 via 200.5.59.162`
+- `ip route add 200.5.59.144/30 via 200.5.59.162`
+- `ip route add 200.5.59.192/26 via 200.5.59.162`
+- `ip route add 200.5.62.0/23 via 200.5.59.162`
 
 
 **Router n15**
-- `ip route add 46.90.20.0/23 via 46.90.19.173`
-- `ip route add 46.90.19.184/30 via 46.90.19.173`
-- `ip route add 46.90.19.180/30 via 46.90.19.173`
-- `ip route add 46.90.19.176/30 via 46.90.19.173`
-- `ip route add 46.90.19.164/30 via 46.90.19.173`
-- `ip route add 46.90.19.188/30 via 46.90.19.173`
-- `ip route add 46.90.19.160/30 via 46.90.19.173`
-- `ip route add 46.90.19.156/30 via 46.90.19.173`
-- `ip route add 46.90.19.152/30 via 46.90.19.170`
-- `ip route add 46.90.19.148/30 via 46.90.19.170`
-- `ip route add 46.90.19.144/30 via 46.90.19.170`
-- `ip route add 46.90.19.192/26 via 46.90.19.170`
-- `ip route add 46.90.22.0/23 via 46.90.19.170`
+- `ip route add 200.5.60.0/23 via 46.90.19.173`
+- `ip route add 200.5.59.184/30 via 200.5.59.173`
+- `ip route add 200.5.59.180/30 via 200.5.59.173`
+- `ip route add 200.5.59.176/30 via 200.5.59.173`
+- `ip route add 200.5.59.164/30 via 200.5.59.173`
+- `ip route add 200.5.59.188/30 via 200.5.59.173`
+- `ip route add 200.5.59.160/30 via 200.5.59.173`
+- `ip route add 200.5.59.156/30 via 200.5.59.173`
+- `ip route add 200.5.59.152/30 via 200.5.59.170`
+- `ip route add 200.5.59.148/30 via 200.5.59.170`
+- `ip route add 200.5.59.144/30 via 200.5.59.170`
+- `ip route add 200.5.59.192/26 via 200.5.59.170`
+- `ip route add 200.5.62.0/23 via 200.5.59.170`
 
 
 **Router n4**
-- `ip route add default via 46.90.19.154`
-- `ip route add 46.90.20.0/23 via 46.90.19.169`
-- `ip route add 46.90.19.184/30 via 46.90.19.169`
-- `ip route add 46.90.19.180/30 via 46.90.19.169`
-- `ip route add 46.90.19.176/30 via 46.90.19.169`
-- `ip route add 46.90.19.164/30 via 46.90.19.169`
-- `ip route add 46.90.19.188/30 via 46.90.19.169`
-- `ip route add 46.90.19.172/30 via 46.90.19.169`
+- `ip route add default via 200.5.59.154`
+- `ip route add 200.5.60.0/23 via 200.5.59.169`
+- `ip route add 200.5.59.184/30 via 200.5.59.169`
+- `ip route add 200.5.59.180/30 via 200.5.59.169`
+- `ip route add 200.5.59.176/30 via 200.5.59.169`
+- `ip route add 200.5.59.164/30 via 200.5.59.169`
+- `ip route add 200.5.59.188/30 via 200.5.59.169`
+- `ip route add 200.5.59.172/30 via 200.5.59.169`
 
 **Router n2**
-- `ip route add default via 46.90.19.150`
-- `ip route add 46.90.20.0/23 via 46.90.19.157`
-- `ip route add 46.90.19.184/30 via 46.90.19.157`
-- `ip route add 46.90.19.180/30 via 46.90.19.157`
-- `ip route add 46.90.19.176/30 via 46.90.19.157`
-- `ip route add 46.90.19.164/30 via 46.90.19.157`
-- `ip route add 46.90.19.172/30 via 46.90.19.157`
-- `ip route add 46.90.19.168/30 via 46.90.19.153`
-- `ip route add 46.90.19.188/30 via 46.90.19.161`
+- `ip route add default via 200.5.59.150`
+- `ip route add 200.5.60.0/23 via 200.5.59.157`
+- `ip route add 200.5.59.184/30 via 200.5.59.157`
+- `ip route add 200.5.59.180/30 via 200.5.59.157`
+- `ip route add 200.5.59.176/30 via 200.5.59.157`
+- `ip route add 200.5.59.164/30 via 200.5.59.157`
+- `ip route add 200.5.59.172/30 via 200.5.59.157`
+- `ip route add 200.5.59.168/30 via 200.5.59.153`
+- `ip route add 200.5.59.188/30 via 200.5.59.161`
 
 **Router n7**
-- `ip route add default via 46.90.19.149`
-- `ip route add 46.90.19.192/26 via 46.90.19.146`
-- `ip route add 46.90.22.0/23 via 46.90.19.146`
+- `ip route add default via 200.5.59.149`
+- `ip route add 200.5.59.192/26 via 200.5.59.146`
+- `ip route add 200.5.62.0/23 via 200.5.59.146`
 
 **Router n8**
-- `ip route add default via 46.90.19.145`
+- `ip route add default via 200.5.59.145`
 
 ---
 

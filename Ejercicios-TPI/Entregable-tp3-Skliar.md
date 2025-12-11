@@ -148,28 +148,27 @@ entonces ->
 
 **Red Asignada: 200A:db8:d1e0:0001::/64**
 
-queda asignada como subred principal par
-
 
 #### Asignación para Red C:
 
 Para la red C, necesitamos cuatro subredes, asignando un /64 a cada una.
+No es comun seguir dividiendo las redes, a menos que sea necesario. Entonces se utiliza
 
 Subred (n2, n7):
 
-**Red Asignada: 2001:db81:000C:0001::/64**
+**Red Asignada: 200A:db8:d1e0:0002::/64**
 
 Subred (n7, n8):
 
-**Red Asignada: 2001:db81:000C:0002::/64**
+**Red Asignada: 200A:db8:d1e0:0003::/64**
 
 Subred (n9):
 
-**Red Asignada: 2001:db81:000C:0003::/64**
+**Red Asignada: 200A:db8:d1e0:0004::/64**
 
 Subred (n14):
 
-**Red Asignada: 2001:db81:000C:0004::/64**
+**Red Asignada: 200A:db8:d1e0:0005::/64**
 
 ---
 

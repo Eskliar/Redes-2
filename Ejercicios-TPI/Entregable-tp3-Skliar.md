@@ -175,7 +175,7 @@ Subred (n14):
 
 ### Asignación de direcciones a cada host a partir del bloque IPv6 asignado
 
-![Hosts IPv6 Asignados Ejercicio 12 Práctica 3](../Recursos-TPI/Ejercicio12-Practica3-HostsIPv6-Asignados.png)
+![Hosts IPv6 Asignados](image-3.png)
 
 ---
 
@@ -267,14 +267,18 @@ Subred (n14):
 
 ## Alternativo: Asignar a n10 una IP según RFC-1918 y configurar NAT en n1 para que pueda alcanzar al resto de los equipos.
 
-Se eliminó la dirección de la red `46.90.19.188/30` en cada router, ya que ahora la red de n10 tiene la dirección privada `192.168.1.0/24`.
+La NAT (Network Address Translation) modifica las direcciones IP de los paquetes a medida que atraviesan un router. El propósito principal de NAT es permitir que varios dispositivos en una red privada (en este caso n10) accedan a redes externas utilizando una sola IP pública o una dirección de red pública asignada, ocultando sus direcciones privadas.
+
+Se eliminó la dirección de la red `200.5.59.188/30` en cada router, ya que ahora la red de n10 tiene la dirección privada `192.168.1.0/24`.
 
 Comando agregado dentro del **Router n1** 
 - `iptables -t nat -A POSTROUTING -s 192.168.1.0/24 -j MASQUERADE`
 
+El tráfico de salida desde n10 tendrá la IP pública de n1 como su dirección de origen, lo que permite que el tráfico sea dirigido correctamente hacia afuera de la red privada.
+
 ### Asignación de direcciones privadas
 
-![Direcciones privadas Asignadas Ejercicio 12 Práctica 3](../Recursos-TPI/Ejercicio12-Practica3-Direcciones-Privadas.png)
+![Direcciones privadas Asignadas](image-1.png)
 
 ---
 
@@ -339,7 +343,7 @@ Se utilzó el comando `ping 46.90.22.2 -s 1000 -c 1 -M dont` dentro de n13
 
 ### Comandos aplicados dentro de los dispositivos dentro de la Red A
 
-Para el caso de la subred (n5, m13 y n11) no hizo falta configurar rutas ya que los dispositivos se encuentran directamente conectados dentro de la misma red.
+Para el caso de la subred (n5, n13 y n11) no hizo falta configurar rutas ya que los dispositivos se encuentran directamente conectados dentro de la misma red.
 
 ### Comandos aplicados dentro de la Red C
 
@@ -351,4 +355,3 @@ Para el caso de la subred (n5, m13 y n11) no hizo falta configurar rutas ya que 
 
 **Router n8**
 - `ip -6 route add default via 2001:db81:000C:0002::1`
-

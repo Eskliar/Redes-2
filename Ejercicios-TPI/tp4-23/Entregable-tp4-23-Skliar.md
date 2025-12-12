@@ -83,11 +83,47 @@ Capturando el tráfico en n9 con Wireshark podemos observar:
 
 
 ## d) Sin cerrar las conexiones chequear los servicios activos y ver los Estados.
-e ) Generar nuevas conexiones hacia el nodo n9 e inspeccionar los estados. Por ejemplo realizar varias conexiones simultáneas al servicio tcp echo desde el mismo origen y desde
-otros nodos.
-f) Intentar generar conexiones a un puerto donde no existe un proceso esperando por recibir datos. ¿Cómo notifica TCP de este hecho (ver flags)?
-g ) Cerrar las conexiones y ver el estado de los servicios en ambos lados. ¿En qué estado queda el que hace el cierre activo?
+
+### Host n13
+- Estableciendo las conexiones con los servicios echo y discard en dos terminales diferentes:
+![tp4-23-d-nc](image-7.png)
+
+### Host n9 (servidor)
+- Vemos el estado de los servicios:
+![tp4-23-d-netstat](image-8.png)
+
+Podemos ver que los servicios activos correspondientes a Echo y Discard presentan estado "establecido".
+
+## e) Generar nuevas conexiones hacia el nodo n9 e inspeccionar los estados. Por ejemplo realizar varias conexiones simultáneas al servicio tcp echo desde el mismo origen y desde otros nodos.
+
+### Generando varias conexiones simultáneas al servicio echo
+#### Host 13:
+- Desde el mismo host, generamos 3 conexiones al mismo servicio echo:
+    ![tp4-23-e-3conexiones](image-9.png)
+    Luego chequeamos los estados:
+    ![tp4-23-e-netstat](image-10.png)
+    Podemos ver que se muestran las nuevas conexiones correspondientes, con la misma dirección IP de host remota para el cliente (lo cual tiene sentido) pero diferente puerto efímero (puerto aleatorio alto, asignado aleatoriamente por el OS)
+
+- Ahora, generando 3 conexiones desde diferentes hosts, en este caso host 13, 11 y 14:
+    ![tp4-23-e-3conect-dif](image-11.png)
+    Luego chequeamos los estados:
+    ![tp4-23-e-netstat2](image-12.png)
+    Podemos ver que se muestran las nuevas conexiones correspondientes, pero esta vez con diferente dirección IP de host remota para cada nodo.
+
+    
+## f) Intentar generar conexiones a un puerto donde no existe un proceso esperando por recibir datos. ¿Cómo notifica TCP de este hecho (ver flags)?
+
+### Intentando conexión desde n13 hacia 12345 de n9
+Dado que el puerto 12345 no está escuchando:
+![tp4-23-f-RST](image-13.png)
+
+En la captura se observa SYN del cliente y, dado que no existe proceso escuchando en el destino, el host responde con RST,ACK (reset). Esta es la notificación estándar de TCP para “puerto cerrado” (connection refused).
+
+## g) Cerrar las conexiones y ver el estado de los servicios en ambos lados. ¿En qué estado queda el que hace el cierre activo?
+
 h) Observando la captura indicar la cantidad de segmentos y los flags utilizados. ¿Con cuántos segmentos se cerró la conexión? ¿Existen otras variantes de cierre?
+
 i) Hacer un diagrama de los segmentos intercambiados con los números de secuencia absolutos para una de las sesiones TCP (Se puede usar la herramienta wireshark u otra).
-j ) Alternativo: Realizar una conexión mediante nc indicando un puerto específico para el cliente. Luego cerrar la conexión desde el cliente e intentar abrirla nuevamente. ¿En qué estado está el socket? Investigar valor del 2MSL en la plataforma sobre la cual está
+
+j) Alternativo: Realizar una conexión mediante nc indicando un puerto específico para el cliente. Luego cerrar la conexión desde el cliente e intentar abrirla nuevamente. ¿En qué estado está el socket? Investigar valor del 2MSL en la plataforma sobre la cual está
 haciendo los tests.

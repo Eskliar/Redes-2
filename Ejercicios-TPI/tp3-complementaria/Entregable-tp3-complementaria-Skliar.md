@@ -39,20 +39,20 @@ Para la red de n15, asignamos una nueva subred /64 del próximo bloque contiguo 
 
 ### Asignación de direcciones a cada host de la red n15
 
-![tp3-redn15](image.png)
+![tp3-comp-n15](image-2.png)
 
 ---
 
 ### Activar los RA dentro de n15
 
-Se realizó la siguiente secuencia.
-
 Primero en una terminal de linux fuera de la herramienta CORE instalamos: `sudo apt install radvd`
 
 Luego dentro del servicio "Static Route" colocamos lo siguiente: `radvd -n -d 2 -C /etc/radvd.conf`
 
+![radvd-staticRoute](image-1.png)
+
 Finalmente con el comando `ip address show` en la terminal del host n16 observaremos la siguiente línea:
 
-![Configuración SLACC en n16](/Recursos-TPI/Ejercicio10-Practica3-complemento-n16..png)
+![configuracion-SLAAC-n16](image-3.png)
 
 Esto significa que la dirección pudo configurarse automáticamente con el RA de su gateway, por lo tanto está funcionando correctamente.

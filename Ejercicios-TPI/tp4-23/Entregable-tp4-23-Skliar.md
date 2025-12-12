@@ -6,10 +6,10 @@ Realizamos el script [Servidor TCP](../../Recursos-TPI/tp4-23/servidor_descartad
 y ejecutamos lo siguiente en cada host:
 
 ### Host n9
-- `python3 <ubicación del script>/servidor_tcp_discard.py` -> servidor TCP discard
+- `python3 <ubicación del script>/servidor_descartador.py` -> ejecuta el script, crea el servidor y comienza a escuchar
 
 ### Host n13
-- `nc <IP_de_n9> 9000`
+- `nc <IP_de_n9> 9000` -> se configura la conexión TCP por defecto hacia el puerto 9000
 
 Probamos si los paquetes se envían y reciben correctamente:
 

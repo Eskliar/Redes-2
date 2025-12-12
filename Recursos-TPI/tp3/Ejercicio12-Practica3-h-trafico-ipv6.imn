@@ -319,8 +319,8 @@ node n7 {
 	!
     }
     canvas c1
-    iconcoords {578.0 92.0}
-    labelcoords {578.0 124.0}
+    iconcoords {576.6666666666666 93.33333333333333}
+    labelcoords {576.6666666666666 125.33333333333333}
     interface-peer {eth0 n3}
     interface-peer {eth2 n6}
     interface-peer {eth3 n8}
@@ -406,7 +406,7 @@ node n8 {
 	#/sbin/ip route add 10.9.8.0/24 via 200.5.59.145
 	#/sbin/ip route add 3ffe:4::/64 via 200a:db8:d1e0:3::1
 	
-	ip -6 route add default via 200A:db8:d1e0:0002::1
+	ip -6 route add default via 200A:db8:d1e0:0003::2
 	
 	ip route add default via 200.5.59.149
 	ip route add 200.5.59.192/26 via 200.5.59.146
@@ -738,7 +738,7 @@ canvas c1 {
 
 option global {
     interface_names yes
-    ip_addresses no
+    ip_addresses yes
     ipv6_addresses yes
     node_labels yes
     link_labels no

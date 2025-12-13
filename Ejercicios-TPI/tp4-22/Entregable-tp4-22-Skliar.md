@@ -56,28 +56,40 @@ Se realizó el script de python "**cliente_udp.py**"
 
 - `python3 <ubicación del script>/cliente_udp.py` -> ejecutamos en una terminal de cada host
 
-Al visualizar el mensaje:
+![udp-eco](image-5.png)
 
-![Mensaje UDP](../Recursos-TPI/Ejercicio22-Practica4-udp-incisoB.png)
-
-Significa que todo se realizó correctamente
+Vemos que la conexión e intercambio se realiza con éxito.
 
 ---
 
 ## Enviar información desde n13 a n9 a un port UDP donde no existe un proceso esperando por recibir datos. ¿Cómo notifica el stack TCP/IP de este hecho? Investigue la herramienta traceroute que ports utiliza y cómo usa estos mensajes (Ver ejercicio de IP con ruteo estático).
 
-Realizamos los pasos similares al inciso anterior, sólo que esta vez le indicamos un puerto diferente al host n13:
+Realizamos los pasos similares al inciso anterior, sólo que esta vez le indicamos un puerto aleatorio al host n13:
 
-### Host n9
-- `vim /etc/inetd.conf` -> Verificamos el archivo
-    - `echo   dgram   udp     wait    root    internal` -> nos aseguramos que esta línea esté descomentada (sin "#" al inicio)
-- `/etc/init.d/openbsd-inetd restart` -> iniciar el servicio
-- `netstat -anu | grep :7` -> verificamos que está funcionando
+### Host n13
+- `echo "Hola?" | nc -u -w 1 46.90.19.194 12345`
+- También podíamos hacerlo cambiando el puerto en la variable "PUERTO" dentro del script "**cliente_udp.py**"
 
-### Host n11
-- `echo "Hola?" | nc -u -w 1 46.90.19.194 9999`
-- También podemos cambiar el puerto en la variable "PUERTO" dentro del script "**cliente_udp.py**"
+El stack TCP/IP notifica el evento mediante un mensaje ICMP “Destination Unreachable – Port Unreachable”.
+![port-unreachable](image-6.png)
 
+La herramienta traceroute utiliza este comportamiento enviando paquetes UDP a puertos altos, en los que no hay servicio escuchando; los routers intermedios responden con ICMP “Time Exceeded”, y el destino final responde con “Port Unreachable”, lo que permite justamente identificar la ruta completa.
 ---
 
 ## Para las pruebas anteriores capturar tráfico y ver el formato de los datagramas UDP y como se encapsulan en IP
+
+Realizando nuevamente las pruebas anteriores, enviando un echo desde n13 a n9, y capturando el tráfico con wireshark:
+
+![trafico-udp-echo](image-7.png)
+![udp-echo-ipv4](image-8.png)
+![icmp-port-unreachable](image-9.png)
+
+Se observa que el **datagrama UDP** está formado por un encabezado de 8 bytes, y un payload con los datos.
+El encabezado contiene los campos:
+ - Source Port 
+ - Destination Port 
+ - Length
+ - Checksum
+El payload se muestra como Data, y contiene los datos transportados.
+El datagrama entero **es encapsulado dentro de un paquete IPv4**, identificado por el campo Protocol = 17.
+Luego, al enviarse el datagrama a un puerto sin servicio, el host destino responde con un mensaje **ICMP** “Destination Unreachable – Port Unreachable”, el cual contiene los primeros 8 bytes del payload original (en este caso contiene el datagrama UDP con error) y **también se encuentra encapsulado dentro de IP**.

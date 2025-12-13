@@ -1,5 +1,4 @@
 import socket
-import sys
 
 # --- CONFIGURACIÓN ---
 # IP del servidor (n9).

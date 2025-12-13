@@ -3,7 +3,7 @@ import sys
 
 # --- CONFIGURACIÓN ---
 # IP del servidor (n9).
-IP_SERVIDOR = "46.90.19.194" 
+IP_SERVIDOR = "200.5.59.194" 
 PUERTO = 7  # Puerto estándar del protocolo ECHO
 
 # --- CREACIÓN DEL SOCKET ---
@@ -16,7 +16,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 # no se quedue esperando para siempre si el paquete se pierde.
 sock.settimeout(2)
 
-mensaje = "Hola, soy el nodo " + socket.gethostname()
+mensaje = "mensaje del nodo " + socket.gethostname()
 
 try:
     print(f"Enviando datos a {IP_SERVIDOR}:{PUERTO}...")
@@ -31,13 +31,13 @@ try:
     # buffer_size = 1024 bytes
     datos, direccion_servidor = sock.recvfrom(1024)
     
-    print(f"¡Éxito! Recibí eco desde {direccion_servidor}: {datos.decode()}")
+    print(f"Eco recibido, origen {direccion_servidor}: {datos.decode()}")
 
 except socket.timeout:
-    print("Error: Se agotó el tiempo de espera. El paquete se perdió o el puerto está cerrado.")
+    print("Timeout, el paquete se perdió o el puerto está cerrado.")
 except Exception as e:
     print(f"Ocurrió un error: {e}")
 
 finally:
-    print("Cerrando socket.")
+    print("Close socket")
     sock.close()

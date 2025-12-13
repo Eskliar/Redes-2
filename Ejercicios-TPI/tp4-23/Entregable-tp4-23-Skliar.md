@@ -121,9 +121,72 @@ En la captura se observa SYN del cliente y, dado que no existe proceso escuchand
 
 ## g) Cerrar las conexiones y ver el estado de los servicios en ambos lados. ¿En qué estado queda el que hace el cierre activo?
 
-h) Observando la captura indicar la cantidad de segmentos y los flags utilizados. ¿Con cuántos segmentos se cerró la conexión? ¿Existen otras variantes de cierre?
 
-i) Hacer un diagrama de los segmentos intercambiados con los números de secuencia absolutos para una de las sesiones TCP (Se puede usar la herramienta wireshark u otra).
+![cierre-conexion](image-14.png)
 
-j) Alternativo: Realizar una conexión mediante nc indicando un puerto específico para el cliente. Luego cerrar la conexión desde el cliente e intentar abrirla nuevamente. ¿En qué estado está el socket? Investigar valor del 2MSL en la plataforma sobre la cual está
-haciendo los tests.
+Al cerrar la conexión TCP desde el nodo n13 (cierre activo), se observa mediante netstat que dicho nodo queda en estado **TIME_WAIT**, mientras que el servidor (n9) pasa por los estados **CLOSE_WAIT y LAST_ACK** hasta finalizar la conexión. 
+El estado TIME_WAIT permite asegurar el cierre correcto de la conexión y evitar la reutilización prematura de la tupla TCP.
+Los estados CLOSE_wAIT y LAST_ACK no se llegan a observar debido a que su transición ocurre muy rapidamente cuando se cierra la conexión
+
+## h) Observando la captura indicar la cantidad de segmentos y los flags utilizados. ¿Con cuántos segmentos se cerró la conexión? ¿Existen otras variantes de cierre?
+
+![segmentos-cierre](image-15.png)
+
+En la captura se observa un cierre TCP normal (4-way handshake, los ultimos 2 se juntan en uno) realizado mediante tres segmentos, protagonizados por los siguientes flags: FIN,ACK (paquete 97) – FIN,ACK (paquete 98) – ACK (paquete 99). Esto corresponde a un cierre ordenado donde el extremo pasivo cierra inmediatamente la conexión.
+Existen otras variantes de cierre, como el **cierre en cuatro segmentos** (FIN–ACK–FIN–ACK), que ocurre cuando el segundo extremo **no cierra inmediatamente la conexión**, o el **cierre abrupto** mediante RST, que se usa ante errores, no hay handshake y la conexión termina inmediatamente.
+
+## i) Hacer un diagrama de los segmentos intercambiados con los números de secuencia absolutos para una de las sesiones TCP (Se puede usar la herramienta wireshark u otra).
+
+![captura-sesion-secuencia](image-16.png)
+
+Se capturó una sesión TCP completa utilizando Wireshark en el router n8.
+Se deshabilitó la opción "números de secuencia relativos", se identificaron los números de secuencia absolutos intercambiados durante el establecimiento, transferencia de datos y cierre de la conexión.
+En base a los numeros de secuencia (Sequence number y Acknowledgment number) se realizó el diagrama, que muestra el three-way handshake, el intercambio de datos y el cierre ordenado de la sesión TCP.
+
+Cliente (n13)                                        Servidor (n9)
+    |                                                     |
+Seq=2229774340  SYN  -----------------------------------> |
+    |                                                     |
+    | <------------------------------------  SYN,ACK   Seq=2587723343  Ack=2229774341
+    |                                                     |
+Seq=2229774341  Ack=2587723344  ------------------------> |  ACK
+    |                                                     |
+Seq=2229774341  Ack=2587723344  PSH,ACK (len=5) --------> |
+    | <------------------------------------  PSH,ACK   Seq=2587723344  Ack=2229774346
+    |                                                     |
+Seq=2229774346  Ack=2587723344  FIN,ACK ----------------> |
+    | <------------------------------------  FIN,ACK   Seq=2587723344  Ack=2229774347
+Seq=2229774347  Ack=2587723345  ------------------------> |  ACK
+    |                                                     |
+
+
+## j) Alternativo: Realizar una conexión mediante nc indicando un puerto específico para el cliente. Luego cerrar la conexión desde el cliente e intentar abrirla nuevamente. ¿En qué estado está el socket? Investigar valor del 2MSL en la plataforma sobre la cual está haciendo los tests.
+
+Primero abrimos una cinexión TCP de puerto fijo 
+
+nc -p 50000 200.5.59.194 9
+
+- -p 50000 → puerto origen fijo del cliente
+- 200.5.59.194 → servidor (n9)
+- 9 → puerto del servicio 
+
+Luego cerramos la conexión desde n13, y observamos que el estado del socket queda en TIME_WAIT
+![netstat-cierre-activo](image-17.png)
+
+Al intentar abrir una conexión nueva, se muestra un error "Address already in use".
+Esto es porque el socket (IP_origen, puerto_origen, IP_destino, puerto_destino) sigue reservado mientras está en TIME_WAIT.
+TCP no permite reutilizarlo inmediatamente, esto evita recibir segmentos viejos y confundir conexiones nuevas con anteriores.
+![addres-in-use](image-18.png)
+
+Para investigar 2xMSL ejecutamos el comando:
+
+sysctl net.ipv4.tcp_fin_timeout
+![2xMSL](image-19.png)
+
+Este es el tiempo asociado a la reserva del socket, en este caso se muestra 60, que equivale a 60 segundos.
+
+
+
+
+
+

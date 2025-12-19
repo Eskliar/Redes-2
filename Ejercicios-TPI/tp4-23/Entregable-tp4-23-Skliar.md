@@ -1,6 +1,6 @@
 # Ejercicio 23 de la Práctica 4
 
-## Programar en el lenguaje de su elección mediante la API socket un servidor TCP que escuche conexiones en el puerto 9000 y que los datos que reciba los descarte. Correr en el nodo n9 y enviar datos desde otro nodo usando la herramienta nc (netcat) o telnet.
+## a) Programar en el lenguaje de su elección mediante la API socket un servidor TCP que escuche conexiones en el puerto 9000 y que los datos que reciba los descarte. Correr en el nodo n9 y enviar datos desde otro nodo usando la herramienta nc (netcat) o telnet.
 
 Realizamos el script [Servidor TCP](../../Recursos-TPI/tp4-23/servidor_descartador.py) con la API socket, utilizando python.
 y ejecutamos lo siguiente en cada host:
@@ -18,7 +18,7 @@ La conexión se establece, se descartan los datos, y luego se cierra correctamen
 
 ---
 
-## En el nodo n9 levantar con el super daemon inetd algunos servicios extras, como tcp echo, discard y otros. Chequear los servicios TCP y UDP activos.
+## b) En el nodo n9 levantar con el super daemon inetd algunos servicios extras, como tcp echo, discard y otros. Chequear los servicios TCP y UDP activos.
 
 ### Host n9
 Ejecutamos lo siguiente:
@@ -43,7 +43,7 @@ Está escuchando en los puertos correctamente
 
 ---
 
-## Desde el nodo n13 realizar una conexión TCP y enviar datos mediante un programa cliente de su elección al servicio discard, y al echo. Capturar el tráfico con la herramienta tcpdump o wireshark y analizar la cantidad de segmentos, los flags utilizados y las opciones extras que llevan los encabezados tcp.
+## c) Desde el nodo n13 realizar una conexión TCP y enviar datos mediante un programa cliente de su elección al servicio discard, y al echo. Capturar el tráfico con la herramienta tcpdump o wireshark y analizar la cantidad de segmentos, los flags utilizados y las opciones extras que llevan los encabezados tcp.
 
 ### Host n13
 Utilizando nc para enviar datos:
@@ -159,6 +159,7 @@ Seq=2229774346  Ack=2587723344  FIN,ACK ----------------> |
 Seq=2229774347  Ack=2587723345  ------------------------> |  ACK
     |                                                     |
 
+![alt text](diagrama-ASCII.png)
 
 ## j) Alternativo: Realizar una conexión mediante nc indicando un puerto específico para el cliente. Luego cerrar la conexión desde el cliente e intentar abrirla nuevamente. ¿En qué estado está el socket? Investigar valor del 2MSL en la plataforma sobre la cual está haciendo los tests.
 

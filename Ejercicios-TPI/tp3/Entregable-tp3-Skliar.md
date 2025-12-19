@@ -126,7 +126,7 @@ Finalmente las direcciones: `200.5.48.0` hasta `200.5.59.143` quedan libres para
 ![Hosts ipv4 Asignados tp3](image-2.png)
 ---
 
-## Configurar la red detrás de n5 (n5,n13,n11) y la Red C con el bloque IPv6 asignado.
+## a) Configurar la red detrás de n5 (n5,n13,n11) y la Red C con el bloque IPv6 asignado.
 
 ### Direcciones IPv6 asignadas con el bloque asignado 200A:db8:d1e0::/48
 
@@ -179,8 +179,8 @@ Subred (n14):
 
 ---
 
-## Resolver con ruteo estático la topología.
-## Realizar test con ping (ICMP) y traceroute para probar que funciona la topología.
+## b) Resolver con ruteo estático la topología.
+## d) Realizar test con ping (ICMP) y traceroute para probar que funciona la topología.
 
 ### Comandos aplicados a cada router
 
@@ -219,7 +219,7 @@ Subred (n14):
 
 
 **Router n15**
-- `ip route add 200.5.60.0/23 via 46.90.19.173`
+- `ip route add 200.5.60.0/23 via 200.5.59.173`
 - `ip route add 200.5.59.184/30 via 200.5.59.173`
 - `ip route add 200.5.59.180/30 via 200.5.59.173`
 - `ip route add 200.5.59.176/30 via 200.5.59.173`
@@ -265,7 +265,7 @@ Subred (n14):
 
 ---
 
-## Alternativo: Asignar a n10 una IP según RFC-1918 y configurar NAT en n1 para que pueda alcanzar al resto de los equipos.
+## c) Alternativo: Asignar a n10 una IP según RFC-1918 y configurar NAT en n1 para que pueda alcanzar al resto de los equipos.
 
 La NAT (Network Address Translation) modifica las direcciones IP de los paquetes a medida que atraviesan un router. El propósito principal de NAT es permitir que varios dispositivos en una red privada (en este caso n10) accedan a redes externas utilizando una sola IP pública o una dirección de red pública asignada, ocultando sus direcciones privadas.
 
@@ -282,7 +282,7 @@ El tráfico de salida desde n10 tendrá la IP pública de n1 como su dirección 
 
 ---
 
-## Capturar puntualmente el tráfico de n13 hacia n7 y analizar: ARP e ICMP.
+## e) Capturar puntualmente el tráfico de n13 hacia n7 y analizar: ARP e ICMP.
 
 ### Captura de tráfico realizando ping de n13 hacia n7
 Se ha capturado la interfaz eth0 del router n5 mediante Wireshark.
@@ -304,7 +304,7 @@ Se ha capturado la interfaz eth0 del router n5 mediante Wireshark.
 
 ---
 
-### Realizar un traceroute entre los mismos equipos, capturar los mensajes.
+## f) Realizar un traceroute entre los mismos equipos, capturar los mensajes.
 
 ### Captura de tráfico realizando traceroute de n13 hacia n7
 
@@ -317,7 +317,7 @@ Se ha capturado la interfaz eth0 del router n5 mediante Wireshark.
 
 ---
 
-## Alternativo: Modificar los MTU para ver la fragmentación.
+## g) Alternativo: Modificar los MTU para ver la fragmentación.
 
 Modificaremos el enlace n2-n7, para luego probar el tráfico desde n13 a n14, que pasa por n7.
 
@@ -351,7 +351,7 @@ Este comando envía un solo paquete de tamaño 1000 bytes
 ![wireshark fragmentación](image-12.png)
 ---
 
-## Probar conectividad en las redes con IPv6 (por separado), capturar tráfico y analizar ICMPv6
+## h) Probar conectividad en las redes con IPv6 (por separado), capturar tráfico y analizar ICMPv6
 
 ### Comandos aplicados dentro de los dispositivos dentro de la Red A
 
@@ -363,10 +363,10 @@ Para el caso de la subred (n5, n13 y n11) no hizo falta configurar rutas ya que 
 - `ip -6 route add default via 200A:db8:d1e0:0002::2`
 
 **Router n7**
-- `ip -6 route add default via 200A:db8:d1e0:0002::1`
+- `ip -6 route add default via 200A:db8:d1e0:0003::2`
 
 **Router n8**
-- `ip -6 route add default via 200A:db8:d1e0:0003::2`
+- `ip -6 route add default via 200A:db8:d1e0:0003::1`
 
 #### Captura de tráfico en Red C:
 
